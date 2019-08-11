@@ -12,9 +12,17 @@ module.exports = {
       return response.status(400).json({ error: "Developer does not exists" });
     }
 
-    if (loggedDeveloper.likes.includes(targetDeveloper._id)) {
-      console.log("Match");
-      return;
+    if (targetDeveloper.likes.includes(loggedDeveloper._id)) {
+      const loggedSocket = request.connectedUsers[userId];
+      const targetSocket = request.connectedUsers[devId];
+
+      if (loggedSocket) {
+        request.io.to(loggedSocket).emit("match", targetDeveloper);
+      }
+
+      if (targetSocket) {
+        request.io.to(targetSocket).emit("match", loggedDeveloper);
+      }
     }
 
     loggedDeveloper.likes.push(targetDeveloper._id);

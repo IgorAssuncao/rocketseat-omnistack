@@ -12,10 +12,6 @@ module.exports = {
       return response.status(400).json({ error: "Developer does not exists" });
     }
 
-    // if (loggedDeveloper.dislikes.includes(targetDeveloper._id)) {
-    //   return;
-    // }
-
     loggedDeveloper.dislikes.push(targetDeveloper._id);
 
     await loggedDeveloper.save();
